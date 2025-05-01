@@ -18,7 +18,7 @@ scalacOptions ++= Seq(
 )
 
 lazy val standartSettings = Seq(
-  scalaVersion := "2.13.14"
+  scalaVersion := "2.13.16"
 )
 
 enablePlugins(JavaAppPackaging, DockerPlugin)

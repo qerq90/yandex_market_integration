@@ -8,8 +8,7 @@ import org.http4s.dsl.Http4sDsl
 import org.http4s.implicits._
 import org.http4s.ember.server.EmberServerBuilder
 
-final class ServerLive(config: ServerConfig)
-    extends Server {
+final class ServerLive(config: ServerConfig) extends Server {
 
   private val dsl = Http4sDsl[Task]
   import dsl._

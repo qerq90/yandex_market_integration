@@ -12,7 +12,7 @@ object Server {
   val live: ZLayer[ServerConfig, Nothing, Server] =
     ZLayer {
       for {
-        config         <- ZIO.service[ServerConfig]
+        config <- ZIO.service[ServerConfig]
       } yield new ServerLive(config)
     }
 }
