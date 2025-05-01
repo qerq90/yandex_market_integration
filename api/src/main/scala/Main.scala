@@ -1,4 +1,5 @@
-import dao.{BaseDao, PostgresConfig}
+import dao.BaseDao
+import dao.config.PostgresConfig
 import dao.order.OrderDao
 import server.Server
 import server.config.ServerConfig

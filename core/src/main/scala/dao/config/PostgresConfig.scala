@@ -1,4 +1,4 @@
-package dao
+package dao.config
 
 import pureconfig.ConfigSource
 import pureconfig.generic.auto._

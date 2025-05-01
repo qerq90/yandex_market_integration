@@ -9,6 +9,7 @@ import java.util.UUID
 trait OrderDao {
   def saveOrder(order: Order): Task[Unit]
   def getOrder(campaignId: Int, orderId: Int): Task[Option[Order]]
+  def getOrdersByStatus(campaignId: Int, status: String): Task[List[Order]]
 }
 
 object OrderDao {

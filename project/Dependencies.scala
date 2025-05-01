@@ -37,7 +37,12 @@ object Dependencies {
     "circe-parser"
   ).map("io.circe" %% _ % "0.14.13")
 
+  private val enumeratum = List(
+    "com.beachape" %% "enumeratum"        % "1.7.6",
+    "com.beachape" %% "enumeratum-doobie" % "1.7.8"
+  )
+
   val apiDependencies: List[ModuleID] = pureconfig ++ ip4s
   val coreDependencies: List[ModuleID] =
-    zio ++ http4s ++ doobie ++ circe ++ pureconfig
+    zio ++ http4s ++ doobie ++ circe ++ pureconfig ++ enumeratum
 }

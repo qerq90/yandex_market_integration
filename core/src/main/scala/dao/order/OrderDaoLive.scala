@@ -12,7 +12,7 @@ class OrderDaoLive(dao: BaseDao) extends OrderDao {
   override def saveOrder(order: Order): Task[Unit] =
     dao
       .query(
-        sql"insert into orders(campaignId, orderId, createdAt, data) values (${order.campaignId}, ${order.orderId}, ${order.createdAt}, ${order.data.asJson.noSpaces}::jsonb)".update.run
+        sql"insert into orders(campaignId, orderId, status, createdAt, data) values (${order.campaignId}, ${order.orderId}, ${order.status}, ${order.createdAt}, ${order.data.asJson.noSpaces}::jsonb)".update.run
       )
       .unit
 
@@ -21,5 +21,15 @@ class OrderDaoLive(dao: BaseDao) extends OrderDao {
       sql"select * from orders where campaignId = $campaignId and orderId = $orderId"
         .query[Order]
         .option
+    )
+
+  override def getOrdersByStatus(
+      campaignId: Int,
+      status: String
+  ): Task[List[Order]] =
+    dao.query(
+      sql"select * from orders where campaignId = $campaignId and status = $status"
+        .query[Order]
+        .to[List]
     )
 }

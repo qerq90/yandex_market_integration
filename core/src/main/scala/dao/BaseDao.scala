@@ -1,6 +1,7 @@
 package dao
 
 import cats.implicits._
+import dao.config.PostgresConfig
 import doobie.ConnectionIO
 import doobie.hikari.{Config, HikariTransactor}
 import doobie.implicits._
