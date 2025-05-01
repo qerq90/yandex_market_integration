@@ -13,9 +13,9 @@ class BaseDao(xa: Transactor[Task]) {
 }
 
 object BaseDao {
-  val live: ZLayer[PostgressConfig, Throwable, BaseDao] = ZLayer.scoped {
+  val live: ZLayer[PostgresConfig, Throwable, BaseDao] = ZLayer.scoped {
     for {
-      config <- ZIO.service[PostgressConfig]
+      config <- ZIO.service[PostgresConfig]
 
       daoconfig = Config(
         jdbcUrl = config.jdbcUrl,

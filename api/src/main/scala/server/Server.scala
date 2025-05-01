@@ -2,6 +2,7 @@ package server
 
 import server.config.ServerConfig
 import server.ServerLive
+import services.order.OrderService
 import zio._
 
 trait Server {
@@ -9,10 +10,11 @@ trait Server {
 }
 
 object Server {
-  val live: ZLayer[ServerConfig, Nothing, Server] =
+  val live: ZLayer[ServerConfig with OrderService, Nothing, Server] =
     ZLayer {
       for {
-        config <- ZIO.service[ServerConfig]
-      } yield new ServerLive(config)
+        config       <- ZIO.service[ServerConfig]
+        orderService <- ZIO.service[OrderService]
+      } yield new ServerLive(config, orderService)
     }
 }

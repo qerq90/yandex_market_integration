@@ -4,7 +4,8 @@ object Dependencies {
   private val http4s =
     List(
       "http4s-ember-server",
-      "http4s-dsl"
+      "http4s-dsl",
+      "http4s-circe"
     )
       .map("org.http4s" %% _ % "0.23.16")
 
@@ -36,6 +37,7 @@ object Dependencies {
     "circe-parser"
   ).map("io.circe" %% _ % "0.14.13")
 
-  val apiDependencies: List[ModuleID]  = pureconfig ++ ip4s
-  val coreDependencies: List[ModuleID] = zio ++ http4s ++ doobie ++ circe
+  val apiDependencies: List[ModuleID] = pureconfig ++ ip4s
+  val coreDependencies: List[ModuleID] =
+    zio ++ http4s ++ doobie ++ circe ++ pureconfig
 }

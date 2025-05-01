@@ -1,5 +1,8 @@
 package model.order
 
+import io.circe.Decoder
+import io.circe.generic.semiauto._
+
 import java.time.LocalDateTime
 
 case class Order(
@@ -8,3 +11,7 @@ case class Order(
   createdAt: LocalDateTime,
   data: OrderData
 )
+
+object Order {
+  implicit val decoder: Decoder[Order] = deriveDecoder[Order]
+}
