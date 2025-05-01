@@ -5,7 +5,7 @@ import model.user.User
 import zio.{Task, ZLayer}
 
 trait UserDao {
-  def getUsers(campaignId: Int): Task[List[User]]
+  def getUsers(campaignIds: List[Int]): Task[List[User]]
   def saveUser(user: User): Task[Unit]
 }
 

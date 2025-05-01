@@ -7,9 +7,9 @@ import zio.Task
 
 class UserDaoLive(dao: BaseDao) extends UserDao {
 
-  override def getUsers(campaignId: Int): Task[List[User]] =
+  override def getUsers(campaignIds: List[Int]): Task[List[User]] =
     dao.query(
-      sql"select * from users where campaignId = $campaignId"
+      sql"select * from users where campaignId IN (${campaignIds.mkString(",")})"
         .query[User]
         .to[List]
     )

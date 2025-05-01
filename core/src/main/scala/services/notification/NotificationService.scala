@@ -1,9 +1,8 @@
 package services.notification
 
-import zio.UIO
-
-import java.util.UUID
+import model.order.Order
+import zio.Task
 
 trait NotificationService {
-  def notify(userId: UUID): UIO[Unit]
+  def notifyUsers(orders: List[Order]): Task[Unit]
 }
