@@ -42,7 +42,17 @@ object Dependencies {
     "com.beachape" %% "enumeratum-doobie" % "1.7.8"
   )
 
+  private val telegram = List(
+    "com.bot4s" %% "telegram-core" % "5.8.4"
+  )
+
+  private val sttp = List(
+    "com.softwaremill.sttp.client3" %% "core" % "3.11.0",
+    "com.softwaremill.sttp.client3" %% "zio"  % "3.11.0",
+    "com.softwaremill.sttp.client3" %% "async-http-client-backend-zio" % "3.11.0"
+  )
+
   val apiDependencies: List[ModuleID] = pureconfig ++ ip4s
   val coreDependencies: List[ModuleID] =
-    zio ++ http4s ++ doobie ++ circe ++ pureconfig ++ enumeratum
+    zio ++ http4s ++ doobie ++ circe ++ pureconfig ++ enumeratum ++ telegram ++ sttp
 }

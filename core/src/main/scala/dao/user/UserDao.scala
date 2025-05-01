@@ -10,6 +10,6 @@ trait UserDao {
 }
 
 object UserDao {
-  val live: ZLayer[BaseDao, Nothing, UserDaoLive] =
+  val live: ZLayer[BaseDao, Nothing, UserDao] =
     ZLayer.fromFunction(new UserDaoLive(_))
 }

@@ -9,6 +9,6 @@ trait OrderService {
 }
 
 object OrderService {
-  val live: ZLayer[OrderDao, Nothing, OrderServiceLive] =
+  val live: ZLayer[OrderDao, Nothing, OrderService] =
     ZLayer.fromFunction(new OrderServiceLive(_))
 }
