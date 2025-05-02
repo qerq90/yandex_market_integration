@@ -1,4 +1,4 @@
-package services.notification
+package service.notification
 
 import client.telegram.TelegramClient
 import dao.user.UserDao
@@ -35,7 +35,6 @@ class NotificationServiceLive(userDao: UserDao, telegramClient: TelegramClient)
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
-    // Формируем сообщение для каждого заказа
     val orderMessages = orders.map { order =>
       val itemsSummary = order.data.items
         .map(item => s"- ${item.count} x ${item.offerId}")
@@ -49,7 +48,6 @@ class NotificationServiceLive(userDao: UserDao, telegramClient: TelegramClient)
          |""".stripMargin
     }
 
-    // Объединяем все сообщения с заголовком
     s"""
        |Поступили новые заказы:
        |${"-" * 30}

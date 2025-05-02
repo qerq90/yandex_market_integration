@@ -1,15 +1,15 @@
 package dao.order
 
 import dao.BaseDao
-import model.order.Order
+import model.order.{Order, Status}
 import zio.{Task, ZLayer}
-
-import java.util.UUID
 
 trait OrderDao {
   def saveOrder(order: Order): Task[Unit]
   def getOrder(campaignId: Int, orderId: Int): Task[Option[Order]]
-  def getOrdersByStatus(campaignId: Int, status: String): Task[List[Order]]
+  def getOrdersByStatus(status: Status): Task[List[Order]]
+  def changeStatus(orders: List[Order], status: Status): Task[Unit]
+
 }
 
 object OrderDao {

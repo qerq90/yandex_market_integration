@@ -9,7 +9,7 @@ import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.implicits._
 import org.http4s.ember.server.EmberServerBuilder
-import services.order.OrderService
+import service.order.OrderService
 
 final class ServerLive(config: ServerConfig, orderService: OrderService)
     extends Server {

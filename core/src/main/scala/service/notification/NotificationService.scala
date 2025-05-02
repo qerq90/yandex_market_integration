@@ -1,4 +1,4 @@
-package services.notification
+package service.notification
 
 import client.telegram.TelegramClient
 import dao.user.UserDao

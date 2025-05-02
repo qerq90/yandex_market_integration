@@ -1,4 +1,4 @@
-package services.order
+package service.order
 
 import dao.order.OrderDao
 import io.circe.Json

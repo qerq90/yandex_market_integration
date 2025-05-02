@@ -3,7 +3,7 @@ import dao.config.PostgresConfig
 import dao.order.OrderDao
 import server.Server
 import server.config.ServerConfig
-import services.order.OrderService
+import service.order.OrderService
 import zio._
 
 object Main extends ZIOAppDefault {

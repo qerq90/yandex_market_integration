@@ -2,7 +2,7 @@ package server
 
 import server.config.ServerConfig
 import server.ServerLive
-import services.order.OrderService
+import service.order.OrderService
 import zio._
 
 trait Server {
