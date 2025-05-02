@@ -2,9 +2,10 @@ package task.notification
 
 import dao.order.OrderDao
 import model.order.Status
+import model.order.Status.Finished
 import service.notification.NotificationService
 import task.Scheduler
-import zio.{durationInt, Duration, Task, ZLayer}
+import zio.{durationInt, Duration, Task, ZIO, ZLayer}
 
 class NotificationTask(
   notificationService: NotificationService,
@@ -16,8 +17,11 @@ class NotificationTask(
   override def task: Task[Unit] =
     for {
       orders <- orderDao.getOrdersByStatus(Status.Enriched)
-      _      <- notificationService.notifyUsers(orders)
-      _      <- orderDao.changeStatus(orders, Status.Finished)
+      _      <- ZIO.log(s"Orders to process: $orders")
+      _ <- ZIO.when(orders.nonEmpty)(
+        notificationService
+          .notifyUsers(orders) *> orderDao.changeStatus(orders, Finished)
+      )
     } yield ()
 }
 

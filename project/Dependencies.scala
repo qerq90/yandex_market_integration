@@ -52,7 +52,14 @@ object Dependencies {
     "com.softwaremill.sttp.client3" %% "async-http-client-backend-zio" % "3.11.0"
   )
 
-  val apiDependencies: List[ModuleID] = pureconfig ++ ip4s
+  private val logging = List(
+    "org.slf4j"      % "slf4j-api"         % "2.0.17",
+    "ch.qos.logback" % "logback-classic"   % "1.5.18",
+    "dev.zio"       %% "zio-logging"       % "2.5.0",
+    "dev.zio"       %% "zio-logging-slf4j" % "2.5.0"
+  )
+
+  val apiDependencies: List[ModuleID] = pureconfig ++ ip4s ++ logging
   val coreDependencies: List[ModuleID] =
-    zio ++ http4s ++ doobie ++ circe ++ pureconfig ++ enumeratum ++ telegram ++ sttp
+    zio ++ http4s ++ doobie ++ circe ++ pureconfig ++ enumeratum ++ telegram ++ sttp ++ logging
 }

@@ -9,8 +9,8 @@ import java.time.LocalDateTime
 import scala.util.Try
 
 case class Order(
-  orderId: Int,
   campaignId: Int,
+  orderId: Int,
   status: Status,
   createdAt: LocalDateTime,
   data: OrderData

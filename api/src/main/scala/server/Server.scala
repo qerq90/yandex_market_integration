@@ -1,12 +1,11 @@
 package server
 
 import server.config.ServerConfig
-import server.ServerLive
 import service.order.OrderService
 import zio._
 
 trait Server {
-  def run(): ZIO[Any, Throwable, Unit]
+  def run(): UIO[Unit]
 }
 
 object Server {

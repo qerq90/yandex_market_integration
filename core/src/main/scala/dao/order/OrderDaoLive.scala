@@ -1,24 +1,26 @@
 package dao.order
 
+import cats.data.NonEmptyList
 import dao.BaseDao
+import doobie.Fragments
 import doobie.implicits._
 import doobie.postgres.implicits._
 import io.circe.syntax._
 import model.order.{Order, Status}
-import zio.Task
+import zio.{Task, ZIO}
 
 class OrderDaoLive(dao: BaseDao) extends OrderDao {
 
   override def saveOrder(order: Order): Task[Unit] =
     dao
       .query(
-        sql"insert into orders(campaignId, orderId, status, createdAt, data) values (${order.campaignId}, ${order.orderId}, ${order.status.entryName}, ${order.createdAt}, ${order.data.asJson.noSpaces}::jsonb)".update.run
+        sql"insert into orders(campaign_id, order_id, status, createdAt, data) values (${order.campaignId}, ${order.orderId}, ${order.status.entryName}, ${order.createdAt}, ${order.data.asJson.noSpaces}::jsonb)".update.run
       )
       .unit
 
   override def getOrder(campaignId: Int, orderId: Int): Task[Option[Order]] =
     dao.query(
-      sql"select * from orders where campaignId = $campaignId and orderId = $orderId"
+      sql"select * from orders where campaign_id = $campaignId and order_id = $orderId"
         .query[Order]
         .option
     )
@@ -33,9 +35,15 @@ class OrderDaoLive(dao: BaseDao) extends OrderDao {
     )
 
   override def changeStatus(orders: List[Order], status: Status): Task[Unit] =
-    dao
-      .query(
-        sql"update orders where orderId in (${orders.map(_.orderId).mkString(",")}) set status = ${status.entryName}".update.run
-      )
-      .unit
+    NonEmptyList.fromList(orders.map(_.orderId)) match {
+      case None => ZIO.unit
+      case Some(ids) =>
+        dao
+          .query(
+            (sql"update orders set status = ${status.entryName} where " ++ Fragments
+              .in(fr"order_id", ids)).update.run
+          )
+          .unit
+    }
+
 }

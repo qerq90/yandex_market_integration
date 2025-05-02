@@ -2,7 +2,7 @@ package server
 
 import io.circe.Json
 import server.config.ServerConfig
-import zio.{Task, ZIO}
+import zio.{Task, UIO, ZIO}
 import zio.interop.catz._
 import org.http4s._
 import org.http4s.circe._
@@ -28,7 +28,7 @@ final class ServerLive(config: ServerConfig, orderService: OrderService)
 
   private val httpApp: HttpApp[Task] = routes.orNotFound
 
-  override def run(): ZIO[Any, Throwable, Unit] =
+  override def run(): UIO[Unit] =
     EmberServerBuilder
       .default[Task]
       .withHost(config.host)
@@ -36,4 +36,5 @@ final class ServerLive(config: ServerConfig, orderService: OrderService)
       .withHttpApp(httpApp)
       .build
       .useForever
+      .orDie
 }
