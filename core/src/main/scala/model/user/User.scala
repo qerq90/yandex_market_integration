@@ -1,6 +1,7 @@
 package model.user
 
 case class User(
+  campaignId: Int,
   telegramId: Int,
-  campaignId: Int
+  token: String
 )

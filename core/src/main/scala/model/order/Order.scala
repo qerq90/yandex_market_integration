@@ -1,7 +1,5 @@
 package model.order
 
-import io.circe.Decoder
-import io.circe.generic.semiauto._
 import model.order.OrderData.Item
 import model.yandex.OrderCreated
 

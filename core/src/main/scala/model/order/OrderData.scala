@@ -18,7 +18,8 @@ object OrderData {
 
   case class Item(
     count: Int,
-    offerId: String
+    offerId: String,
+    name: Option[String] = None
   )
 
   object Item {

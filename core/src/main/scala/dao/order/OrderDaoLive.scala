@@ -2,9 +2,10 @@ package dao.order
 
 import cats.data.NonEmptyList
 import dao.BaseDao
-import doobie.Fragments
+import doobie.{Fragments, Update}
 import doobie.implicits._
 import doobie.postgres.implicits._
+import io.circe.Json
 import io.circe.syntax._
 import model.order.{Order, Status}
 import zio.{Task, ZIO}
@@ -45,5 +46,19 @@ class OrderDaoLive(dao: BaseDao) extends OrderDao {
           )
           .unit
     }
+
+  override def enrichOrders(enrichedOrders: List[Order]): Task[Unit] =
+    dao
+      .query(
+        Update[(String, Int)](
+          s"update orders set data = ?::jsonb, status = '${Status.Enriched.entryName}' where order_id = ?"
+        )
+          .updateMany(
+            enrichedOrders.map(order =>
+              (order.data.asJson.noSpaces, order.orderId)
+            )
+          )
+      )
+      .unit
 
 }

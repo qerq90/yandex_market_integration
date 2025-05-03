@@ -16,4 +16,6 @@ class OrderServiceLive(orderDao: OrderDao) extends OrderService {
         .orElseFail(new Throwable("Can't transform orderCreated to order"))
       _ <- orderDao.saveOrder(order)
     } yield ()
+
+  override def enrichOrder(order: Order): Task[Order] = ???
 }

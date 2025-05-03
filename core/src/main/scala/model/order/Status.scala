@@ -10,5 +10,6 @@ object Status extends Enum[Status] with DoobieEnum[Status] {
   case object Created  extends Status
   case object Enriched extends Status
   case object Finished extends Status
+  case object Failed   extends Status
 
 }

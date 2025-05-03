@@ -5,7 +5,8 @@ object Dependencies {
     List(
       "http4s-ember-server",
       "http4s-dsl",
-      "http4s-circe"
+      "http4s-circe",
+      "http4s-ember-client"
     )
       .map("org.http4s" %% _ % "0.23.16")
 

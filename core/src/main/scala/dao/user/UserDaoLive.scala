@@ -24,7 +24,7 @@ class UserDaoLive(dao: BaseDao) extends UserDao {
   override def saveUser(user: User): Task[Unit] =
     dao
       .query(
-        sql"insert into users (telegram_id, campaign_id) values (${user.telegramId}, ${user.campaignId})".update.run
+        sql"insert into users (telegram_id, campaign_id, token) values (${user.telegramId}, ${user.campaignId}, ${user.token})".update.run
       )
       .unit
 }

@@ -37,7 +37,9 @@ class NotificationServiceLive(userDao: UserDao, telegramClient: TelegramClient)
 
     val orderMessages = orders.map { order =>
       val itemsSummary = order.data.items
-        .map(item => s"- ${item.count} x ${item.offerId}")
+        .map(item =>
+          s"- ${item.count} x ${item.name.getOrElse("Имя товара не найдено")}"
+        )
         .mkString("\n")
 
       s"""

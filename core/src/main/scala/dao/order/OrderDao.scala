@@ -9,7 +9,7 @@ trait OrderDao {
   def getOrder(campaignId: Int, orderId: Int): Task[Option[Order]]
   def getOrdersByStatus(status: Status): Task[List[Order]]
   def changeStatus(orders: List[Order], status: Status): Task[Unit]
-
+  def enrichOrders(enrichedOrders: List[Order]): Task[Unit]
 }
 
 object OrderDao {
