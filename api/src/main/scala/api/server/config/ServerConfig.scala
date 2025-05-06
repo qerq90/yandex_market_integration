@@ -1,4 +1,4 @@
-package server.config
+package api.server.config
 
 import zio._
 import pureconfig._

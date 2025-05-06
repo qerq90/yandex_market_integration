@@ -1,15 +1,15 @@
-package server
+package api.server
 
+import api.server.config.ServerConfig
 import io.circe.Json
-import server.config.ServerConfig
-import zio.{Task, UIO, ZIO}
-import zio.interop.catz._
 import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
-import org.http4s.implicits._
 import org.http4s.ember.server.EmberServerBuilder
+import org.http4s.implicits._
 import service.order.OrderService
+import zio.interop.catz._
+import zio.{Task, UIO}
 
 final class ServerLive(config: ServerConfig, orderService: OrderService)
     extends Server {

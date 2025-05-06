@@ -1,6 +1,6 @@
-package server
+package api.server
 
-import server.config.ServerConfig
+import api.server.config.ServerConfig
 import service.order.OrderService
 import zio._
 

@@ -23,6 +23,11 @@ lazy val standartSettings = Seq(
 
 enablePlugins(JavaAppPackaging, DockerPlugin)
 
+name                := "yandex-integration"
+version             := "0.1.0"
+scalaVersion        := "2.13.16"
+Compile / mainClass := Some("api.Main")
+
 resolvers ++= Seq(
   Resolver.mavenLocal,
   "Maven Central" at "https://repo1.maven.org/maven2/",

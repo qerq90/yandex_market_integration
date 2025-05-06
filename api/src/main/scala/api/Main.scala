@@ -1,3 +1,7 @@
+package api
+
+import api.server.Server
+import api.server.config.ServerConfig
 import bot.TelegramBot
 import client.telegram.TelegramClient
 import client.yandex.YandexClient
@@ -7,8 +11,6 @@ import dao.order.OrderDao
 import dao.user.UserDao
 import model.config.TelegramConfig
 import repository.yandex.YandexRepository
-import server.Server
-import server.config.ServerConfig
 import service.notification.NotificationService
 import service.order.OrderService
 import task.enrich.EnrichTask
