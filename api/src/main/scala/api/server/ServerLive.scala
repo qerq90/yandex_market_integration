@@ -2,6 +2,7 @@ package api.server
 
 import api.server.config.ServerConfig
 import io.circe.Json
+import io.circe.syntax._
 import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
@@ -11,8 +12,8 @@ import service.order.OrderService
 import zio.interop.catz._
 import zio.{Task, UIO, ZIO}
 
-import java.time.LocalDateTime.now
-import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 final class ServerLive(config: ServerConfig, orderService: OrderService)
     extends Server {
@@ -25,20 +26,24 @@ final class ServerLive(config: ServerConfig, orderService: OrderService)
     case req @ POST -> Root / "notification" =>
       for {
         json   <- req.as[Json]
-        body   <- req.bodyText.compile.string
-        _      <- ZIO.log(s"REQUEST: $body")
         n_type <- ZIO.fromEither(json.hcursor.get[String]("notificationType"))
-        _      <- ZIO.log(s"N_TYPE: $n_type")
         _ <- n_type match {
           case "PING" => ZIO.unit
           case _      => orderService.saveOrder(json)
         }
-        jsonResp = Json.fromString(
-          s"""{"name":"santexserv","time":${now().atZone(
-              ZoneId.of("Europe/Moscow")
-            )},"version":"1.0.0"}"""
+        jsonResp = Json.fromFields(
+          List(
+            ("name", "santexserv".asJson),
+            (
+              "time",
+              ZonedDateTime
+                .now(java.time.ZoneId.of("UTC"))
+                .format(DateTimeFormatter.ISO_INSTANT)
+                .asJson
+            ),
+            ("version", "1.0.0".asJson)
+          )
         )
-        _    <- ZIO.log(s"JSON RESP: $jsonResp")
         resp <- Ok(jsonResp)
       } yield resp
   }
