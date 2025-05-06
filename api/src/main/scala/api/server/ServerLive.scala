@@ -85,20 +85,18 @@ final class ServerLive(config: ServerConfig, orderService: OrderService)
     }
 
   override def run(): UIO[Unit] =
-    ZIO.scoped {
-      sslContext.flatMap { sslContext =>
-        val tls = TLSContext.Builder.forAsync[Task].fromSSLContext(sslContext)
-        EmberServerBuilder
-          .default[Task]
-          .withHost(config.host)
-          .withPort(config.port)
-          .withTLS(tls)
-          .withHttpApp(httpApp)
-          .build
-          .useForever
-          .orDie
+    sslContext.flatMap { sslContext =>
+      val tls = TLSContext.Builder.forAsync[Task].fromSSLContext(sslContext)
+      EmberServerBuilder
+        .default[Task]
+        .withHost(config.host)
+        .withPort(config.port)
+        .withTLS(tls)
+        .withHttpApp(httpApp)
+        .build
+        .useForever
+        .orDie
 
-      }
-    }
+    }.orDie
 
 }
