@@ -25,16 +25,21 @@ final class ServerLive(config: ServerConfig, orderService: OrderService)
     case req @ POST -> Root / "notification" =>
       for {
         json   <- req.as[Json]
+        body   <- req.bodyText.compile.string
+        _      <- ZIO.log(s"REQUEST: $body")
         n_type <- ZIO.fromEither(json.hcursor.get[String]("notificationType"))
+        _      <- ZIO.log(s"N_TYPE: $n_type")
         _ <- n_type match {
           case "PING" => ZIO.unit
           case _      => orderService.saveOrder(json)
         }
-        resp <- Ok(
-          Json.fromString(s"""{"name":"santexserv","time":${now().atZone(
+        jsonResp = Json.fromString(
+          s"""{"name":"santexserv","time":${now().atZone(
               ZoneId.of("Europe/Moscow")
-            )},"version":"1.0.0"}""")
+            )},"version":"1.0.0"}"""
         )
+        _    <- ZIO.log(s"JSON RESP: $jsonResp")
+        resp <- Ok(jsonResp)
       } yield resp
   }
 
