@@ -1,4 +1,4 @@
-package client.telegram.config
+package model.config
 
 import pureconfig.generic.auto._
 import pureconfig.ConfigSource

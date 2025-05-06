@@ -44,7 +44,8 @@ object Dependencies {
   )
 
   private val telegram = List(
-    "com.bot4s" %% "telegram-core" % "5.8.4"
+    "com.bot4s"      %% "telegram-core" % "5.8.4",
+    "org.augustjune" %% "canoe"         % "0.6.0"
   )
 
   private val sttp = List(

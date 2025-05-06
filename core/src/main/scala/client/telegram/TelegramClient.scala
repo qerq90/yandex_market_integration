@@ -1,7 +1,7 @@
 package client.telegram
 
-import client.telegram.config.TelegramConfig
 import com.bot4s.telegram.clients.SttpClient
+import model.config.TelegramConfig
 import org.asynchttpclient.Dsl.asyncHttpClient
 import sttp.client3.SttpBackend
 import sttp.client3.asynchttpclient.zio.{

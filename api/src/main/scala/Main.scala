@@ -1,10 +1,11 @@
+import bot.TelegramBot
 import client.telegram.TelegramClient
-import client.telegram.config.TelegramConfig
 import client.yandex.YandexClient
 import dao.BaseDao
 import dao.config.PostgresConfig
 import dao.order.OrderDao
 import dao.user.UserDao
+import model.config.TelegramConfig
 import repository.yandex.YandexRepository
 import server.Server
 import server.config.ServerConfig
@@ -20,7 +21,10 @@ object Main extends ZIOAppDefault {
   override val bootstrap: ZLayer[ZIOAppArgs, Nothing, Unit] =
     Runtime.removeDefaultLoggers >>> SLF4J.slf4j
 
-  private type Env = Server with NotificationTask with EnrichTask
+  private type Env = Server
+    with NotificationTask
+    with EnrichTask
+    with TelegramBot
 
   private val env =
     ZLayer.make[Env](
@@ -37,13 +41,15 @@ object Main extends ZIOAppDefault {
       NotificationTask.live,
       YandexClient.live,
       YandexRepository.live,
-      EnrichTask.live
+      EnrichTask.live,
+      TelegramBot.live
     )
 
   private val program =
     ZIO.serviceWithZIO[Server](_.run()) <&> ZIO
       .serviceWithZIO[NotificationTask](_.run) <&> ZIO
-      .serviceWithZIO[EnrichTask](_.run)
+      .serviceWithZIO[EnrichTask](_.run) <&> ZIO
+      .serviceWithZIO[TelegramBot](_.run)
 
   override def run: ZIO[ZIOAppArgs with Scope, Any, Any] =
     program.provideLayer(env)
