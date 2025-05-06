@@ -9,7 +9,7 @@ import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.implicits._
 import service.order.OrderService
 import zio.interop.catz._
-import zio.{Task, UIO}
+import zio.{Task, UIO, ZIO}
 
 import java.time.LocalDateTime.now
 import java.time.ZoneId
@@ -24,8 +24,12 @@ final class ServerLive(config: ServerConfig, orderService: OrderService)
   private val routes: HttpRoutes[Task] = HttpRoutes.of[Task] {
     case req @ POST -> Root / "notification" =>
       for {
-        json <- req.as[Json]
-        _    <- orderService.saveOrder(json)
+        json   <- req.as[Json]
+        n_type <- ZIO.fromEither(json.hcursor.get[String]("notificationType"))
+        _ <- n_type match {
+          case "PING" => ZIO.unit
+          case _      => orderService.saveOrder(json)
+        }
         resp <- Ok(
           Json.fromString(s"""{"name":"santexserv","time":${now().atZone(
               ZoneId.of("Europe/Moscow")
