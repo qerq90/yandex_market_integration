@@ -5,10 +5,10 @@ import io.circe.generic.semiauto.deriveDecoder
 import model.yandex.OrderCreated.Item
 
 case class OrderCreated(
-  campaignId: Int,
+  campaignId: Long,
   createdAt: String,
   items: List[Item],
-  orderId: Int
+  orderId: Long
 )
 
 object OrderCreated {

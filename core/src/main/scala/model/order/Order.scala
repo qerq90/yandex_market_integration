@@ -3,12 +3,12 @@ package model.order
 import model.order.OrderData.Item
 import model.yandex.OrderCreated
 
-import java.time.LocalDateTime
+import java.time.{LocalDateTime, ZonedDateTime}
 import scala.util.Try
 
 case class Order(
-  campaignId: Int,
-  orderId: Int,
+  campaignId: Long,
+  orderId: Long,
   status: Status,
   createdAt: LocalDateTime,
   data: OrderData
@@ -16,12 +16,12 @@ case class Order(
 
 object Order {
   def fromOrderCreated(orderCreated: OrderCreated): Option[Order] =
-    Try(LocalDateTime.parse(orderCreated.createdAt)).toOption.map(createdAt =>
+    Try(ZonedDateTime.parse(orderCreated.createdAt)).toOption.map(createdAt =>
       Order(
         orderId = orderCreated.orderId,
         campaignId = orderCreated.campaignId,
         status = Status.Created,
-        createdAt = createdAt,
+        createdAt = createdAt.toLocalDateTime,
         data = OrderData(
           orderCreated.items.map(item => Item(item.count, item.offerId))
         )

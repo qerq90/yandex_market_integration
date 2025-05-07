@@ -15,7 +15,7 @@ class OrderDaoLive(dao: BaseDao) extends OrderDao {
   override def saveOrder(order: Order): Task[Unit] =
     dao
       .query(
-        sql"insert into orders(campaign_id, order_id, status, createdAt, data) values (${order.campaignId}, ${order.orderId}, ${order.status.entryName}, ${order.createdAt}, ${order.data.asJson.noSpaces}::jsonb)".update.run
+        sql"insert into orders(campaign_id, order_id, status, created_at, data) values (${order.campaignId}, ${order.orderId}, ${order.status.entryName}, ${order.createdAt}, ${order.data.asJson.noSpaces}::jsonb)".update.run
       )
       .unit
 
@@ -50,7 +50,7 @@ class OrderDaoLive(dao: BaseDao) extends OrderDao {
   override def enrichOrders(enrichedOrders: List[Order]): Task[Unit] =
     dao
       .query(
-        Update[(String, Int)](
+        Update[(String, Long)](
           s"update orders set data = ?::jsonb, status = '${Status.Enriched.entryName}' where order_id = ?"
         )
           .updateMany(

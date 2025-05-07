@@ -9,7 +9,7 @@ import zio.{Task, ZIO}
 
 class UserDaoLive(dao: BaseDao) extends UserDao {
 
-  override def getUsers(campaignIds: List[Int]): Task[List[User]] =
+  override def getUsers(campaignIds: List[Long]): Task[List[User]] =
     NonEmptyList.fromList(campaignIds) match {
       case None => ZIO.succeed(List())
       case Some(ids) =>

@@ -29,7 +29,10 @@ final class ServerLive(config: ServerConfig, orderService: OrderService)
         n_type <- ZIO.fromEither(json.hcursor.get[String]("notificationType"))
         _ <- n_type match {
           case "PING" => ZIO.unit
-          case _      => orderService.saveOrder(json)
+          case _ =>
+            orderService
+              .saveOrder(json)
+              .tapError(err => ZIO.logError(err.getMessage))
         }
         jsonResp = Json.fromFields(
           List(
