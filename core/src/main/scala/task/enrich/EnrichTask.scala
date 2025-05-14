@@ -15,11 +15,12 @@ class EnrichTask(
   orderService: OrderService
 ) extends Scheduler {
 
-  override val interval: Duration = 10.seconds
+  override val interval: Duration    = 10.seconds
+  private val numberOfTasksToProcess = 10
 
   override def task: Task[Unit] =
     for {
-      orders <- orderDao.getOrdersByStatus(Created)
+      orders <- orderDao.getOrdersByStatus(Created, numberOfTasksToProcess)
       _      <- ZIO.log(s"Orders to enrich: $orders")
       _      <- ZIO.when(orders.nonEmpty)(orderService.enrichOrders(orders))
     } yield ()

@@ -27,10 +27,11 @@ class OrderDaoLive(dao: BaseDao) extends OrderDao {
     )
 
   override def getOrdersByStatus(
-      status: Status
+      status: Status,
+      limit: Long
   ): Task[List[Order]] =
     dao.query(
-      sql"select * from orders where status = ${status.entryName}"
+      sql"select * from orders where status = ${status.entryName} limit $limit"
         .query[Order]
         .to[List]
     )

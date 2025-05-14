@@ -12,12 +12,16 @@ class NotificationTask(
   orderDao: OrderDao
 ) extends Scheduler {
 
-  override val interval: Duration = 10.seconds
+  override val interval: Duration    = 10.seconds
+  private val numberOfTasksToProcess = 10
 
   override def task: Task[Unit] =
     for {
-      orders <- orderDao.getOrdersByStatus(Status.Enriched)
-      _      <- ZIO.log(s"Orders to process: $orders")
+      orders <- orderDao.getOrdersByStatus(
+        Status.Enriched,
+        numberOfTasksToProcess
+      )
+      _ <- ZIO.log(s"Orders to process: $orders")
       _ <- ZIO.when(orders.nonEmpty)(
         notificationService
           .notifyUsers(orders) *> orderDao.changeStatus(orders, Finished)
