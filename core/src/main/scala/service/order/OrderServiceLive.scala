@@ -22,7 +22,8 @@ class OrderServiceLive(
       order <- ZIO
         .fromOption(Order.fromOrderCreated(orderCreated))
         .orElseFail(new Throwable("Can't transform orderCreated to order"))
-      _ <- orderDao.saveOrder(order)
+      potentialOrder <- orderDao.getOrder(order.campaignId, order.orderId)
+      _ <- ZIO.when(potentialOrder.isEmpty)(orderDao.saveOrder(order))
     } yield ()
 
   override def enrichOrders(orders: List[Order]): Task[Unit] = {

@@ -19,7 +19,7 @@ class OrderDaoLive(dao: BaseDao) extends OrderDao {
       )
       .unit
 
-  override def getOrder(campaignId: Int, orderId: Int): Task[Option[Order]] =
+  override def getOrder(campaignId: Long, orderId: Long): Task[Option[Order]] =
     dao.query(
       sql"select * from orders where campaign_id = $campaignId and order_id = $orderId"
         .query[Order]
