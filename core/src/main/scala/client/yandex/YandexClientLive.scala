@@ -1,6 +1,10 @@
 package client.yandex
 
-import client.yandex.model.{Campaigns, OfferMappingResponse}
+import client.yandex.model.campaigns.Campaigns
+import client.yandex.model.detailed_offer.DetailedOfferResponse
+import client.yandex.model.offer_mapping.OfferMappingResponse
+import client.yandex.model.region.RegionResponse
+import io.circe.generic.auto._
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.client.Client
 import org.http4s.implicits.http4sLiteralsSyntax
@@ -41,4 +45,38 @@ class YandexClientLive(client: Client[Task]) extends YandexClient {
 
     client.expect[Campaigns](request)
   }
+
+  override def getDetailedOrderInfo(
+      token: String,
+      campaigns: Long,
+      orderIds: List[Long]
+  ): Task[DetailedOfferResponse] = {
+    case class GetDetailedOrderRequest(orders: List[Long])
+
+    val request = Request[Task](
+      method = Method.POST,
+      uri = uri / "campaigns" / campaigns / "stats" / "orders",
+      headers = Headers(
+        Header.Raw(ci"Api-Key", token)
+      )
+    ).withEntity(GetDetailedOrderRequest(orderIds))
+
+    client.expect[DetailedOfferResponse](request)
+  }
+
+  override def getRegionInfo(
+      token: String,
+      regionId: Long
+  ): Task[RegionResponse] = {
+    val request = Request[Task](
+      method = Method.POST,
+      uri = uri / "regions" / regionId,
+      headers = Headers(
+        Header.Raw(ci"Api-Key", token)
+      )
+    )
+
+    client.expect[RegionResponse](request)
+  }
+
 }

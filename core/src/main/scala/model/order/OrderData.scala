@@ -9,6 +9,7 @@ import io.circe._
 import model.order.OrderData.Item
 
 case class OrderData(
+  isLocal: Option[Boolean],
   items: List[Item]
 )
 

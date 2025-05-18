@@ -23,6 +23,7 @@ object Order {
         status = Status.Created,
         createdAt = createdAt.toLocalDateTime,
         data = OrderData(
+          None,
           orderCreated.items.map(item => Item(item.count, item.offerId))
         )
       )

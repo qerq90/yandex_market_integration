@@ -1,4 +1,4 @@
-package client.yandex.model
+package client.yandex.model.campaigns
 
 import io.circe._
 import io.circe.generic.semiauto._

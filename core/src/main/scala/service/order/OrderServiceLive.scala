@@ -50,11 +50,15 @@ class OrderServiceLive(
       case None => orderDao.changeStatus(orders, Failed)
       case Some(user) =>
         for {
-          offerMappings <- repo.getOfferMapping(user)
+          detailedOrders <- repo.getDetailedOrders(user, orders.map(_.orderId))
+          offerMappings  <- repo.getOfferMapping(user)
           enrichedOrders = orders.map(order =>
             order.copy(data =
-              order.data.copy(items =
-                order.data.items.map(item =>
+              order.data.copy(
+                isLocal = detailedOrders
+                  .find(_.orderId == order.orderId)
+                  .map(_.isLocal),
+                items = order.data.items.map(item =>
                   item.copy(name =
                     Some(
                       offerMappings

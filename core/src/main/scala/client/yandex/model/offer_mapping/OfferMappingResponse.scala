@@ -1,9 +1,10 @@
-package client.yandex.model
+package client.yandex.model.offer_mapping
+
+import io.circe._
+import io.circe.generic.semiauto._
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import io.circe._
-import io.circe.generic.semiauto._
 
 // Основная структура ответа
 case class OfferMappingResponse(
@@ -41,8 +42,10 @@ case class Paging(
   prevPageToken: Option[String]
 )
 object Paging {
-  implicit val decoder: Decoder[Paging] = deriveDecoder[Paging]
-  implicit val encoder: Encoder[Paging] = deriveEncoder[Paging]
+  implicit val decoder: Decoder[Paging] =
+    deriveDecoder[Paging]
+  implicit val encoder: Encoder[Paging] =
+    deriveEncoder[Paging]
 }
 
 // Маппинг оффера
@@ -120,9 +123,11 @@ object Offer {
       age           <- c.get[Option[Age]]("age")
       basicPrice    <- c.get[Price]("basicPrice")
       purchasePrice <- c.get[Price]("purchasePrice")
-      additionalExpenses <- c.get[Option[Price]]("additionalExpenses")
-      cofinancePrice     <- c.get[Option[Price]]("cofinancePrice")
-      cardStatus         <- c.get[String]("cardStatus")
+      additionalExpenses <- c.get[Option[Price]](
+        "additionalExpenses"
+      )
+      cofinancePrice <- c.get[Option[Price]]("cofinancePrice")
+      cardStatus     <- c.get[String]("cardStatus")
       campaigns <- c.getOrElse[List[OfferCampaign]]("campaigns")(List.empty)
       sellingPrograms <- c.getOrElse[List[SellingProgram]]("sellingPrograms")(
         List.empty
@@ -264,8 +269,10 @@ object Price {
       _.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
     )
 
-  implicit val decoder: Decoder[Price] = deriveDecoder[Price]
-  implicit val encoder: Encoder[Price] = deriveEncoder[Price]
+  implicit val decoder: Decoder[Price] =
+    deriveDecoder[Price]
+  implicit val encoder: Encoder[Price] =
+    deriveEncoder[Price]
 }
 
 // Кампания
