@@ -44,8 +44,11 @@ class NotificationServiceLive(userDao: UserDao, telegramClient: TelegramClient)
 
       s"""
          |Заказ #${order.orderId}[${order.data.isLocal
-          .map(_.toString)
-          .getOrElse("Не определен")}]
+          .map {
+            case true  => "LOCAL"
+            case false => "NON LOCAL"
+          }
+          .getOrElse("UNDEFINED")}]
          |Создан: ${order.createdAt.format(formatter)}
          |Товары:
          |$itemsSummary
