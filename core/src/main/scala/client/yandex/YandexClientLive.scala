@@ -69,7 +69,7 @@ class YandexClientLive(client: Client[Task]) extends YandexClient {
       regionId: Long
   ): Task[RegionResponse] = {
     val request = Request[Task](
-      method = Method.POST,
+      method = Method.GET,
       uri = uri / "regions" / regionId,
       headers = Headers(
         Header.Raw(ci"Api-Key", token)
