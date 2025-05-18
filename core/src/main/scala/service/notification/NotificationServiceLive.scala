@@ -43,7 +43,9 @@ class NotificationServiceLive(userDao: UserDao, telegramClient: TelegramClient)
         .mkString("\n")
 
       s"""
-         |Заказ #${order.orderId}
+         |Заказ #${order.orderId}[${order.data.isLocal
+          .map(_.toString)
+          .getOrElse("Не определен")}]
          |Создан: ${order.createdAt.format(formatter)}
          |Товары:
          |$itemsSummary
