@@ -3,7 +3,7 @@ package model.order
 import model.order.OrderData.Item
 import model.yandex.OrderCreated
 
-import java.time.{LocalDateTime, ZonedDateTime}
+import java.time.{LocalDateTime, ZoneId, ZonedDateTime}
 import scala.util.Try
 
 case class Order(
@@ -21,7 +21,9 @@ object Order {
         orderId = orderCreated.orderId,
         campaignId = orderCreated.campaignId,
         status = Status.Created,
-        createdAt = createdAt.toLocalDateTime,
+        createdAt = createdAt
+          .withZoneSameInstant(ZoneId.of("Europe/Moscow"))
+          .toLocalDateTime,
         data = OrderData(
           None,
           orderCreated.items.map(item => Item(item.count, item.offerId))
