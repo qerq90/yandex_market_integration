@@ -10,7 +10,7 @@ import org.http4s.client.Client
 import org.http4s.implicits.http4sLiteralsSyntax
 import org.http4s.{Header, Headers, Method, Request}
 import org.typelevel.ci.CIStringSyntax
-import zio.Task
+import zio.{Task, ZIO}
 import zio.interop.catz._
 
 class YandexClientLive(client: Client[Task]) extends YandexClient {
@@ -29,7 +29,9 @@ class YandexClientLive(client: Client[Task]) extends YandexClient {
       )
     )
 
-    client.expect[OfferMappingResponse](request)
+    client
+      .expect[OfferMappingResponse](request)
+      .tapError(err => ZIO.logError(s"ERROR: ${err.getCause}"))
   }
 
   override def getBusinessIds(
