@@ -20,8 +20,12 @@ class YandexRepositoryLive(client: YandexClient) extends YandexRepository {
         .getBusinessIds(user.token)
         .map(_.campaigns.map(_.business.id))
 
-      offerResponses <- ZIO.foreachPar(businessIds)(
-        client.getOffers(_, user.token)
+      offerResponses <- ZIO.foreach(businessIds)(id =>
+        client
+          .getOffers(id, user.token)
+          .tapError(err =>
+            ZIO.logError(s"Error with businessId $id: ${err.getMessage}")
+          )
       )
       resp = offerResponses.flatMap(
         _.result.offerMappings.map(offer =>
@@ -39,7 +43,12 @@ class YandexRepositoryLive(client: YandexClient) extends YandexRepository {
         .getDetailedOrderInfo(user.token, user.campaignId, orders)
         .map(_.result.orders)
 
-      detailedOrders <- ZIO.foreachPar(orderInfos)(makeDetailedOrder(user, _))
+      detailedOrders <- ZIO.foreach(orderInfos)(order =>
+        makeDetailedOrder(user, order)
+          .tapError(err =>
+            ZIO.logError(s"Error with order ${order.id}: ${err.getMessage}")
+          )
+      )
 
     } yield detailedOrders
 
