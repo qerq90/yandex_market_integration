@@ -83,7 +83,7 @@ case class Offer(
   adult: Option[Boolean],
   age: Option[Age],
   basicPrice: Price,
-  purchasePrice: Price,
+  purchasePrice: Option[Price],
   additionalExpenses: Option[Price],
   cofinancePrice: Option[Price],
   cardStatus: String,
@@ -122,7 +122,7 @@ object Offer {
       adult         <- c.get[Option[Boolean]]("adult")
       age           <- c.get[Option[Age]]("age")
       basicPrice    <- c.get[Price]("basicPrice")
-      purchasePrice <- c.get[Price]("purchasePrice")
+      purchasePrice <- c.get[Option[Price]]("purchasePrice")
       additionalExpenses <- c.get[Option[Price]](
         "additionalExpenses"
       )
